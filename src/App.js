@@ -1,7 +1,6 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import Book from './Book'
 import Bookshelf from './Bookshelf'
 
 class BooksApp extends React.Component {
@@ -20,6 +19,19 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then((books) => (
       this.setState({ books })
     ))
+  }
+  updateBook = (book, newShelf) => {
+    BooksAPI.update(book, newShelf).then((result) => {
+      this.setState(state => {
+          state.books.map((b) => {
+            b.shelf = book.id === b.id ?
+                        newShelf :
+                        b.shelf
+            return b
+          })
+      })
+    }
+    )
   }
 
   bookshelves = [
@@ -60,7 +72,9 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
             {this.bookshelves.map((shelf) => (
               <Bookshelf title={shelf.title}
-              books={this.state.books.filter((book) => book.shelf === shelf.shelf)} />
+              books={this.state.books.filter((book) => book.shelf === shelf.shelf)}
+              onShelfChange={this.updateBook}
+              key={shelf.shelf}/>
             )
             )}
             </div>
