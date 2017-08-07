@@ -1,4 +1,5 @@
 import React from 'react'
+import { defaultTo } from 'ramda'
 
 const Book = (props) => (
   <div className="book">
@@ -16,7 +17,7 @@ const Book = (props) => (
       </div>
     </div>
     <div className="book-title">{props.data.title}</div>
-    <div className="book-authors">{props.data.authors.join(', ')}</div>
+    <div className="book-authors">{defaultTo([], props.data.authors).join(', ')}</div>
   </div>
 )
 
