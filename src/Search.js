@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
-import BooksAPI, { search } from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import * as R from 'ramda'
 
 
@@ -28,10 +28,10 @@ class Search extends Component {
     if (q.length < 1 && this.props.books.length > 0) {
       this.setState({ books: [] })
     } else {
-      search(q, 20).then((result) => {
+      BooksAPI.search(q, 20).then((result) => {
         console.log(result)
-        console.log(result.map(this.getShelf))
-        console.log(this.props.books)
+        // console.log(result.map(this.getShelf))
+        // console.log(this.props.books)
         this.setState({
           books: result.error ? [] : result.map((book) => (R.merge(book, {shelf: this.getShelf(book)}))
 
@@ -40,12 +40,6 @@ class Search extends Component {
       })
     }
   }
-
-
-  // onInputChange = (q) => (
-  //   BooksAPI.search(q, 20).then(result =>
-  //     console.log(result))
-  // )
 
   render() {
     return (

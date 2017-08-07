@@ -1,10 +1,10 @@
 import React from 'react'
-import { defaultTo } from 'ramda'
+import * as R from 'ramda'
 
 const Book = (props) => (
   <div className="book">
     <div className="book-top">
-      <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${props.data.imageLinks.smallThumbnail})` }}></div>
+      <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${R.pathOr('', ['imageLinks', 'smallThumbnail'], props.data)})` }}></div>
       <div className="book-shelf-changer">
         <select value={props.data.shelf}
         onChange={(e) => props.onShelfChange(props.data, e.target.value)}>
@@ -17,7 +17,7 @@ const Book = (props) => (
       </div>
     </div>
     <div className="book-title">{props.data.title}</div>
-    <div className="book-authors">{defaultTo([], props.data.authors).join(', ')}</div>
+    <div className="book-authors">{R.propOr([],'authors', props.data).join(', ')}</div>
   </div>
 )
 

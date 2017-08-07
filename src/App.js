@@ -4,6 +4,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Main from './Main'
 import Search from './Search'
+import * as R from 'ramda'
 
 class BooksApp extends React.Component {
   state = {
@@ -15,18 +16,15 @@ class BooksApp extends React.Component {
       this.setState({ books })
     ))
   }
+
   updateBook = (book, newShelf) => {
-    BooksAPI.update(book, newShelf).then((result) => {
-      this.setState(state => {
-          state.books.map((b) => {
-            b.shelf = book.id === b.id ?
-                        newShelf :
-                        b.shelf
-            return b
-          })
-      })
-    }
-    )
+    this.setState({books: R.map(R.ifElse(R.propEq('id', book.id), R.assoc('shelf', newShelf), R.identity),
+  this.state.books)})
+    BooksAPI.update(book, newShelf).then((result) => (
+      BooksAPI.getAll().then((books) => (
+        this.setState({ books })
+        ))
+      ))
   }
 
   bookshelves = [
