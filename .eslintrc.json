@@ -1,36 +1,20 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true
-    },
-    "extends": "eslint:recommended",
-    "installedESLint": true,
-    "parserOptions": {
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        },
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ],
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ]
-    }
+  // Enables ES-Lint in a create-react-app
+  "extends": "react-app",
+  "rules": {
+    // Udacity JavaScript Style Guide
+    "semi": ["warn", "never"],
+    "camelcase": ["warn"],
+    "brace-style": ["warn",
+      "1tbs",
+      { "allowSingleLine": true }],
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+         }
+       ]
+  }
 }

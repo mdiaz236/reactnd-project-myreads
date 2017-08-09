@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -6,7 +6,7 @@ import Main from './Main'
 import Search from './Search'
 import * as R from 'ramda'
 
-class BooksApp extends React.Component {
+class BooksApp extends Component {
   state = {
     books: []
   }
@@ -19,18 +19,18 @@ class BooksApp extends React.Component {
 
   updateBook = (book, newShelf) => {
     this.setState({books: R.map(R.ifElse(R.propEq('id', book.id), R.assoc('shelf', newShelf), R.identity),
-  this.state.books)})
-    BooksAPI.update(book, newShelf).then((result) => (
+      this.state.books)})
+    BooksAPI.update(book, newShelf).then(() => (
       BooksAPI.getAll().then((books) => (
         this.setState({ books })
-        ))
       ))
+    ))
   }
 
   bookshelves = [
-      {title: 'Current Reading', shelf: 'currentlyReading'},
-      {title: 'Want to Read', shelf: 'wantToRead'},
-      {title: 'Read', shelf: 'read'}
+    {title: 'Current Reading', shelf: 'currentlyReading'},
+    {title: 'Want to Read', shelf: 'wantToRead'},
+    {title: 'Read', shelf: 'read'}
   ]
 
   render() {
@@ -38,17 +38,17 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route exact path='/' render={() => (
           <Main books={this.state.books}
-          bookshelves={this.bookshelves}
-          updateBook={this.updateBook}
+            bookshelves={this.bookshelves}
+            updateBook={this.updateBook}
           />
-       )}
-       />
-       <Route path='/search' render={() => (
-         <Search books={this.state.books}
-         updateBook={this.updateBook}
-         />
-       )}
-       />
+        )}
+        />
+        <Route path='/search' render={() => (
+          <Search books={this.state.books}
+            updateBook={this.updateBook}
+          />
+        )}
+        />
       </div>
     )
   }

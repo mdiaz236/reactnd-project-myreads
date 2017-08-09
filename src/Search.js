@@ -9,15 +9,6 @@ class Search extends Component {
   state = {
     books: []
   }
-  // getShelf = (book) => {
-  //   // console.log(this.props.books.map(R.prop('id')))
-  //   console.log(book.id)
-  //   console.log(R.filter(R.propEq('id', book.id))(this.props.books))
-  //   // R.defaultTo('none',
-  //   //         R.prop('shelf', R.find(R.propEq('id', book.id), this.props.books) ))
-  // }
-
-
 
   getShelf = (book) => (
     R.defaultTo('none',
