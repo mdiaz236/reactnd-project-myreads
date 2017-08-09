@@ -2,6 +2,7 @@ import React from 'react'
 import Bookshelf from './Bookshelf'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import * as R from 'ramda'
 
 const Main = (props) => (
   <div className="list-books">
@@ -9,12 +10,13 @@ const Main = (props) => (
       <h1>MyReads</h1>
     </div>
     <div className="list-books-content">
-      {props.bookshelves.map((shelf) => (
+      { R.map((shelf) => (
         <Bookshelf title={shelf.title}
-          books={props.books.filter((book) => book.shelf === shelf.shelf)}
+          books={ R.filter(R.pipe(R.prop('shelf'), R.equals(shelf.shelf)),
+                  props.books)}
           onShelfChange={props.updateBook}
           key={shelf.shelf}/>
-      )
+      ), props.bookshelves
       )}
     </div>
     <Link className='open-search' to='/search'>

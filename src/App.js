@@ -18,8 +18,14 @@ class BooksApp extends Component {
   }
 
   updateBook = (book, newShelf) => {
-    this.setState({books: R.map(R.ifElse(R.propEq('id', book.id), R.assoc('shelf', newShelf), R.identity),
+    this.setState(
+      { books: R.map(
+        R.ifElse(
+          R.propEq('id', book.id),
+          R.assoc('shelf', newShelf),
+          R.identity),
       this.state.books)})
+
     BooksAPI.update(book, newShelf).then(() => (
       BooksAPI.getAll().then((books) => (
         this.setState({ books })

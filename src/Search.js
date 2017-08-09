@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
+import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
 import * as R from 'ramda'
 
@@ -10,23 +11,28 @@ class Search extends Component {
     books: []
   }
 
-  getShelf = (book) => (
-    R.defaultTo('none',
-            R.prop('shelf', R.defaultTo({}, R.find(R.propEq('id', book.id)) (this.props.books) )))
-  )
+  getShelf = (book) => {
+    let shelf = 'none'
+    if (R.contains(R.prop('id', book),
+                   R.pluck('id', this.props.books))) {
+        shelf = R.prop('shelf', R.find(
+                  R.propEq('id', book.id),
+                  this.props.books))
+      }
+    return R.assoc('shelf', shelf, book)
+  }
 
   onInputChange = (q) => {
-    if (q.length < 1 && this.props.books.length > 0) {
+    if (!q && this.props.books.length > 0) {
       this.setState({ books: [] })
     } else {
       BooksAPI.search(q, 20).then((result) => {
         console.log(result)
-        // console.log(result.map(this.getShelf))
-        // console.log(this.props.books)
         this.setState({
-          books: result.error ? [] : result.map((book) => (R.merge(book, {shelf: this.getShelf(book)}))
-
-          )
+          books: R.ifElse(
+              R.has('error'),
+              R.prop('items'),
+              R.map(this.getShelf))(result)
         })
       })
     }
@@ -45,16 +51,22 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.books.map((book) => (
+            {R.map((book) => (
               <li key={book.id}>
                  <Book data={book} onShelfChange={this.props.updateBook}/>
-              </li>
-            ))}
+              </li>),
+              this.state.books
+            )}
           </ol>
         </div>
       </div>
     )
   }
+}
+
+Search.propTypes = {
+  books: PropTypes.array,
+  updateBook: PropTypes.func
 }
 
 export default Search
