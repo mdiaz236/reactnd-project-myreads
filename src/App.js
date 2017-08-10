@@ -24,7 +24,9 @@ class BooksApp extends Component {
           R.propEq('id', book.id),
           R.assoc('shelf', newShelf),
           R.identity),
-      this.state.books)})
+      R.contains(book.id, R.pluck('id', this.state.books)) ?
+                this.state.books :
+              R.append(book, this.state.books))})
 
     BooksAPI.update(book, newShelf).then(() => (
       BooksAPI.getAll().then((books) => (

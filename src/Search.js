@@ -52,7 +52,7 @@ class Search extends Component {
           <ol className="books-grid">
             {R.map((book) => (
               <li key={book.id}>
-                 <Book data={book} onShelfChange={this.props.updateBook}/>
+                 <Book data={this.getShelf(book)} onShelfChange={this.props.updateBook}/>
               </li>),
               this.state.books
             )}

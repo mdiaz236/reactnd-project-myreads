@@ -5,7 +5,7 @@ import * as R from 'ramda'
 const Book = (props) => (
   <div className="book">
     <div className="book-top">
-      <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${R.pathOr('', ['imageLinks', 'smallThumbnail'], props.data)})` }}></div>
+      <div className="book-cover" style={{ backgroundImage: `url(${R.pathOr('', ['imageLinks', 'smallThumbnail'], props.data)})` }}></div>
       <div className="book-shelf-changer">
         <select value={R.propOr('none', 'shelf', props.data)}
         onChange={(e) => props.onShelfChange(props.data, e.target.value)}>
