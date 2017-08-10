@@ -10,8 +10,9 @@ const Main = (props) => (
       <h1>MyReads</h1>
     </div>
     <div className="list-books-content">
-      { R.map((shelf) => (
-        <Bookshelf title={shelf.title}
+      {
+        R.map((shelf) => (
+          <Bookshelf title={shelf.title}
           books={ R.filter(R.pipe(R.prop('shelf'), R.equals(shelf.shelf)),
                   props.books)}
           onShelfChange={props.updateBook}

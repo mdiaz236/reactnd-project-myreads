@@ -27,7 +27,6 @@ class Search extends Component {
       this.setState({ books: [] })
     } else {
       BooksAPI.search(q, 20).then((result) => {
-        console.log(result)
         this.setState({
           books: R.ifElse(
               R.has('error'),
